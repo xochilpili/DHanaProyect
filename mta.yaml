@@ -1,0 +1,29 @@
+ID: baseProject
+_schema-version: '2.1'
+version: 0.0.1
+modules:
+  - name: baseProject-db
+    type: hdb
+    path: db
+    parameters:
+      memory: 256M
+      disk-quota: 256M
+    requires:
+      - name: baseProject-hdi-container
+  - name: baseProject-srv
+    type: nodejs
+    path: srv
+    parameters:
+      memory: 512M
+      disk-quota: 256M
+    provides:
+      - name: srv_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: baseProject-hdi-container
+resources:
+  - name: baseProject-hdi-container
+    properties:
+      hdi-container-name: '${service-name}'
+    type: com.sap.xs.hdi-container
